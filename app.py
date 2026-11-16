@@ -121,15 +121,28 @@ def run_inference(sig, fs=500):
     return triage
 
 def generate_interactive_plot(signal_data, title_text):
+    import numpy as np
+    import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
+    
+    # Ensure the data is oriented as (12 leads, N samples)
+    if signal_data.shape[0] != 12 and signal_data.shape[1] == 12:
+        signal_data = signal_data.T
+        
+    n_samples = signal_data.shape[1]
+    time_axis = np.linspace(0, 10, n_samples)
+    
     fig = make_subplots(rows=4, cols=3, subplot_titles=LEAD_NAMES)
-    time_axis = np.linspace(0, 10, signal_data.shape[1])
+    
     for i in range(12):
         row, col = (i // 3) + 1, (i % 3) + 1
         fig.add_trace(go.Scatter(x=time_axis, y=signal_data[i], mode="lines", name=LEAD_NAMES[i], line=dict(width=1.5)), row=row, col=col)
+        
     fig.update_layout(height=850, title_text=title_text, showlegend=False, margin=dict(l=40, r=40, t=60, b=40), dragmode="zoom", autosize=True)
     fig.update_xaxes(matches=None, showticklabels=True, zeroline=False)
     fig.update_yaxes(matches=None, showticklabels=True, zeroline=False)
     return fig
+
 
 def process_ecg(sample_choice, uploaded_image):
     if uploaded_image is not None:
@@ -148,12 +161,7 @@ def process_ecg(sample_choice, uploaded_image):
         label = sample_choice
 
     triage = run_inference(sig, fs=fs)
-    # Ensure the signal is exactly 12 leads by 1000 samples
-    if sig.shape[0] == 12:
-        plot_data = sig
-    else:
-        plot_data = sig.T
-    fig = generate_interactive_plot(plot_data, "12-Lead ECG: " + label)
+        fig = generate_interactive_plot(sig, "12-Lead ECG: " + label)
 
     prob_text = "\n".join(f"- **{c}**: {p:.1%}" for c, p in zip(triage["nn_conditions"], triage["nn_probs"]))
     rec = triage["recommendation"]
