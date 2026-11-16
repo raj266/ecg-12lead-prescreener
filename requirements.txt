@@ -1,0 +1,11 @@
+wfdb
+torch
+numpy
+scipy
+matplotlib
+opencv-python-headless
+Pillow
+gradio>=5.0.0
+nbconvert
+pandas
+requests

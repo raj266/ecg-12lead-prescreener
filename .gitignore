@@ -1,2 +1,7 @@
 .venv/
 __pycache__/
+ptbxl_train/
+sample_ecgs/
+*.log
+*.pid
+output_*.png
