@@ -301,4 +301,4 @@ with gr.Blocks(title="ECG 12-Lead Pre-Screener") as demo:
                 "or treatment. Always consult a qualified healthcare provider for clinical decisions.")
 
 if __name__ == "__main__":
-    demo.launch(mcp_server=True)
+    demo.launch()
