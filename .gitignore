@@ -4,3 +4,4 @@ ptbxl_train/
 *.log
 *.pid
 output_*.png
+arch.jpg
