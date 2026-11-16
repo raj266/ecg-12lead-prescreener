@@ -305,5 +305,13 @@ with gr.Blocks(title="ECG 12-Lead Pre-Screener") as demo:
 def _noop():
     return None
 
+with gr.Accordion("System & MCP Architecture", open=False):
+    gr.Markdown(
+        "### End-to-End Clinical Signal & MCP Pipeline\n"
+        "Built with a **PyTorch 1D-ResNet** trained on PhysioNet PTB-XL records, deterministic clinical biomarker extraction, "
+        "and dual **Gradio 5 Web UI + MCP Server** exposure."
+    )
+    gr.Image("arch.jpg", show_label=False, interactive=False)
+
 if __name__ == "__main__":
     demo.launch(server_name="0.0.0.0", server_port=7860, share=True, ssr_mode=False)
