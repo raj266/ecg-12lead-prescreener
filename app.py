@@ -125,8 +125,8 @@ def generate_interactive_plot(signal_data, title_text):
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
     
-    # Ensure the data is oriented as (12 leads, N samples)
-    if signal_data.shape[0] != 12 and signal_data.shape[1] == 12:
+    # Ensure shape is (12, 1000)
+    if signal_data.shape[0] != 12:
         signal_data = signal_data.T
         
     n_samples = signal_data.shape[1]
@@ -135,13 +135,18 @@ def generate_interactive_plot(signal_data, title_text):
     fig = make_subplots(rows=4, cols=3, subplot_titles=LEAD_NAMES)
     
     for i in range(12):
-        row, col = (i // 3) + 1, (i % 3) + 1
-        fig.add_trace(go.Scatter(x=time_axis, y=signal_data[i], mode="lines", name=LEAD_NAMES[i], line=dict(width=1.5)), row=row, col=col)
+        row = (i // 3) + 1
+        col = (i % 3) + 1
+        # Use a simple list for y to avoid any numpy weirdness
+        y_data = signal_data[i].tolist()
+        fig.add_trace(
+            go.Scatter(x=time_axis, y=y_data, mode="lines", name=LEAD_NAMES[i]),
+            row=row, col=col
+        )
         
-    fig.update_layout(height=850, title_text=title_text, showlegend=False, margin=dict(l=40, r=40, t=60, b=40), dragmode="zoom", autosize=True)
-    fig.update_xaxes(matches=None, showticklabels=True, zeroline=False)
-    fig.update_yaxes(matches=None, showticklabels=True, zeroline=False)
+    fig.update_layout(height=850, title_text=title_text, showlegend=False, autosize=True)
     return fig
+
 
 
 def process_ecg(sample_choice, uploaded_image):
@@ -159,7 +164,6 @@ def process_ecg(sample_choice, uploaded_image):
         sig, fields = wfdb.rdsamp(SAMPLES[sample_choice])
         fs = int(fields["fs"])
         label = sample_choice
-        print(f"DEBUG: Loaded signal shape {sig.shape}, Max value: {np.max(sig)}", flush=True)
 
     triage = run_inference(sig, fs=fs)
     fig = generate_interactive_plot(sig, "12-Lead ECG: " + label)
