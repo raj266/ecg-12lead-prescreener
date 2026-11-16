@@ -8,4 +8,5 @@ Pillow
 gradio>=5.0.0
 nbconvert
 pandas
-requestshuggingface_hub<0.30
+requests
+huggingface_hub<0.30
