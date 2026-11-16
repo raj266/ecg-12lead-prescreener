@@ -159,6 +159,7 @@ def process_ecg(sample_choice, uploaded_image):
         sig, fields = wfdb.rdsamp(SAMPLES[sample_choice])
         fs = int(fields["fs"])
         label = sample_choice
+        print(f"DEBUG: Loaded signal shape {sig.shape}, Max value: {np.max(sig)}", flush=True)
 
     triage = run_inference(sig, fs=fs)
     fig = generate_interactive_plot(sig, "12-Lead ECG: " + label)
