@@ -161,7 +161,7 @@ def process_ecg(sample_choice, uploaded_image):
         label = sample_choice
 
     triage = run_inference(sig, fs=fs)
-        fig = generate_interactive_plot(sig, "12-Lead ECG: " + label)
+    fig = generate_interactive_plot(sig, "12-Lead ECG: " + label)
 
     prob_text = "\n".join(f"- **{c}**: {p:.1%}" for c, p in zip(triage["nn_conditions"], triage["nn_probs"]))
     rec = triage["recommendation"]
