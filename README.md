@@ -14,4 +14,5 @@ pinned: false
 An AI-powered 12-lead ECG prescreening application.
 
 
-![Uploading image_5ed353cd.jpg…]()
+<img width="1408" height="768" alt="arch" src="https://github.com/user-attachments/assets/de8c33bf-c3ae-471c-982a-26bea76cc26f" />
+
