@@ -10,3 +10,4 @@ nbconvert
 pandas
 requests
 huggingface_hub<0.30
+pydantic==2.10.6
