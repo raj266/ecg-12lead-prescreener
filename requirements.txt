@@ -11,3 +11,5 @@ pandas
 requests
 huggingface_hub<0.30
 pydantic==2.10.6
+starlette<0.40
+fastapi<0.113.0
